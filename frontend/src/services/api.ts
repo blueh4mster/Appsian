@@ -15,6 +15,23 @@ export interface RegisterRequest {
   password: string;
 }
 
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface Task {
+  id: string;
+  title: string;
+  isCompleted: boolean;
+  projectId?: string;
+}
+
+export interface AddTaskRequest {
+  title: string;
+}
+
 const API = axios.create({
   baseURL: "http://localhost:5173/api",
 });
