@@ -33,7 +33,7 @@ export interface AddTaskRequest {
 }
 
 const API = axios.create({
-  baseURL: "http://localhost:5173/api",
+  baseURL: "http://localhost:5001/api",
 });
 
 API.interceptors.request.use((req) => {
