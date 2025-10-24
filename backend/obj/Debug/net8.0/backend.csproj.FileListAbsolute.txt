@@ -1,0 +1,8 @@
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.csproj.AssemblyReference.cache
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.AssemblyInfoInputs.cache
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.AssemblyInfo.cs
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.csproj.CoreCompileInputs.cache
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.MvcApplicationPartsAssemblyInfo.cs
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.MvcApplicationPartsAssemblyInfo.cache
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.sourcelink.json
