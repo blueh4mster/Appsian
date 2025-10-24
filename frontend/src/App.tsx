@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import ProjectList from "./components/ProjectList";
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -24,4 +25,10 @@ export default function App() {
       </div>
     );
   }
+
+  return (
+    <div style={{ backgroundColor: "#ffe6f0", minHeight: "100vh", paddingTop: "2rem" }}>
+      <ProjectList />
+    </div>
+  );
 }
