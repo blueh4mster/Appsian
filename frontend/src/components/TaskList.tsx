@@ -8,6 +8,7 @@ interface TaskListProps {
 
 export default function TaskList({ projectId }: TaskListProps) {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [schedule, setSchedule] = useState<string[]>([]);
 
   const fetchTasks = async () => {
     try {
@@ -22,6 +23,22 @@ export default function TaskList({ projectId }: TaskListProps) {
   useEffect(() => {
     fetchTasks();
   }, []);
+
+  useEffect(() => {
+    // Automatically calculate schedule whenever tasks change
+    async function generateSchedule() {
+      if (tasks.length === 0) return;
+      const payload = { tasks: tasks.map(t => ({
+        title: t.title,
+        estimatedHours: t.estimatedHours || 1,
+        dueDate: t.dueDate,
+        dependencies: t.dependencies || []
+      }))};
+      const res = await API.post(`/projects/${projectId}/schedule`, payload);
+      setSchedule(res.data.recommendedOrder);
+    }
+    generateSchedule();
+  }, [tasks]);
 
   const toggleTask = async (taskId: string, isCompleted: boolean) => {
     try {

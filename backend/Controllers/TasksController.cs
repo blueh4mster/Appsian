@@ -31,7 +31,9 @@ namespace Backend.Controllers
                 GetUserId(),
                 projectId,
                 dto.Title,
-                dto.DueDate
+                dto.DueDate,
+                dto.EstimatedHours,
+                dto.Dependencies
             );
 
             // Return task DTO without parent project reference to avoid cycles
@@ -41,7 +43,9 @@ namespace Backend.Controllers
                 Title = task.Title,
                 DueDate = task.DueDate,
                 IsCompleted = task.IsCompleted,
-                ProjectId = task.ProjectId
+                ProjectId = task.ProjectId,
+                EstimatedHours = task.EstimatedHours,
+                Dependencies = task.Dependencies
             });
         }
 
@@ -60,7 +64,9 @@ namespace Backend.Controllers
                 Title = task.Title,
                 DueDate = task.DueDate,
                 IsCompleted = task.IsCompleted,
-                ProjectId = task.ProjectId
+                ProjectId = task.ProjectId,
+                EstimatedHours = task.EstimatedHours,
+                Dependencies = task.Dependencies
             });
         }
 
@@ -82,7 +88,9 @@ namespace Backend.Controllers
                 Title = t.Title,
                 DueDate = t.DueDate,
                 IsCompleted = t.IsCompleted,
-                ProjectId = t.ProjectId
+                ProjectId = t.ProjectId,
+                EstimatedHours = t.EstimatedHours,
+                Dependencies = t.Dependencies
             }).ToList();
 
             return Ok(taskDtos);

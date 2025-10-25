@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import API, {type Project } from "../services/api";
 import TaskList from "./TaskList";
-
+import ScheduleForm from "./ScheduleForm";
 export default function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [newTitle, setNewTitle] = useState("");
-
+  
   const fetchProjects = async () => {
     try {
       const res = await API.get<Project[]>("/projects");
@@ -55,6 +55,7 @@ export default function ProjectList() {
         </button>
       </div>
       {projects.map((project) => (
+        <>
         <div key={project.id} className="card mb-3 shadow-sm" style={{ backgroundColor: "#fff0f6" }}>
           <div className="card-body">
             <div className="d-flex justify-content-between align-items-center">
@@ -64,6 +65,10 @@ export default function ProjectList() {
             <TaskList projectId={project.id} />
           </div>
         </div>
+        <div className="min-h-screen bg-pink-50">
+          <ScheduleForm projectId={project.id} />
+        </div>
+        </>
       ))}
     </div>
   );

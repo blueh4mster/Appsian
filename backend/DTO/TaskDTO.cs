@@ -16,5 +16,10 @@ namespace Backend.DTOs
 
         [Required]
         public Guid ProjectId { get; set; }
+
+        [Range(1, 1000)]
+        public int EstimatedHours { get; set; } = 1; // default 1 hour
+
+        public List<string> Dependencies { get; set; } = new();
     }
 }

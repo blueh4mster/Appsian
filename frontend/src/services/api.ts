@@ -1,4 +1,5 @@
 import axios, { type AxiosResponse } from "axios";
+import { type ScheduleRequestDTO, type ScheduleResponseDTO } from "../types";
 
 // Response types
 export interface LoginResponse {
@@ -41,5 +42,13 @@ API.interceptors.request.use((req) => {
   if (token) req.headers.Authorization = `Bearer ${token}`;
   return req;
 });
+
+export const generateSchedule = async (
+  projectId: string,
+  payload: ScheduleRequestDTO
+): Promise<ScheduleResponseDTO> => {
+  const { data } = await API.post(`/projects/${projectId}/schedule`, payload);
+  return data;
+};
 
 export default API;
