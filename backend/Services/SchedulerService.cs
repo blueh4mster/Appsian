@@ -1,89 +1,70 @@
 using Backend.DTOs;
+using System.Collections.Generic;
 
 namespace Backend.Services
 {
-    public class SchedulerService : ISchedulerService
+    public class SchedulerService
     {
-        public ScheduleResponseDTO GenerateOptimalSchedule(List<TaskScheduleDTO> tasks, DateTime projectStart)
+        public List<string> GenerateSchedule(List<TaskDTO> tasks)
         {
-            // Build graph and in-degree
+            // Build adjacency list (dependency graph)
             var graph = new Dictionary<string, List<string>>();
-            var inDegree = new Dictionary<string, int>();
-            var taskMap = tasks.ToDictionary(t => t.Title);
+            var indegree = new Dictionary<string, int>();
 
             foreach (var task in tasks)
             {
-                graph[task.Title] = new List<string>();
-                inDegree[task.Title] = 0;
+                if (!graph.ContainsKey(task.Title))
+                    graph[task.Title] = new List<string>();
+
+                if (!indegree.ContainsKey(task.Title))
+                    indegree[task.Title] = 0;
             }
 
+            // Add edges
             foreach (var task in tasks)
             {
                 foreach (var dep in task.Dependencies)
                 {
                     if (!graph.ContainsKey(dep))
-                        throw new Exception($"Dependency '{dep}' does not exist.");
+                        graph[dep] = new List<string>();
 
                     graph[dep].Add(task.Title);
-                    inDegree[task.Title]++;
+
+                    if (!indegree.ContainsKey(task.Title))
+                        indegree[task.Title] = 0;
+
+                    indegree[task.Title]++;
                 }
             }
 
-            // Topological sort using Kahn's algorithm
-            var queue = new SortedSet<string>(inDegree.Where(kv => kv.Value == 0).Select(kv => kv.Key));
-            var sorted = new List<string>();
+            // Kahn’s algorithm (BFS-based topological sort)
+            var queue = new Queue<string>(
+                indegree.Where(kv => kv.Value == 0)
+                        .Select(kv => kv.Key)
+                        .OrderBy(title => tasks.First(t => t.Title == title).DueDate ?? DateTime.MaxValue)
+            );
+
+            var order = new List<string>();
 
             while (queue.Count > 0)
             {
-                var current = queue.Min; // pick the earliest lexicographically to be consistent
-                queue.Remove(current);
-                sorted.Add(current);
+                var current = queue.Dequeue();
+                order.Add(current);
+
+                if (!graph.ContainsKey(current)) continue;
 
                 foreach (var neighbor in graph[current])
                 {
-                    inDegree[neighbor]--;
-                    if (inDegree[neighbor] == 0)
-                        queue.Add(neighbor);
+                    indegree[neighbor]--;
+                    if (indegree[neighbor] == 0)
+                        queue.Enqueue(neighbor);
                 }
             }
 
-            if (sorted.Count != tasks.Count)
-                throw new Exception("Cyclic dependency detected among tasks.");
+            if (order.Count != tasks.Count)
+                throw new Exception("Cycle detected or invalid dependencies.");
 
-            // Schedule tasks considering estimated hours and due dates
-            var schedule = new List<ScheduledTaskDTO>();
-            var taskEndDates = new Dictionary<string, DateTime>();
-            var currentTime = projectStart;
-
-            foreach (var title in sorted)
-            {
-                var task = taskMap[title];
-
-                // Ensure task starts after all dependencies are finished
-                var earliestStart = task.Dependencies.Any()
-                    ? task.Dependencies.Max(d => taskEndDates[d])
-                    : currentTime;
-
-                var endDate = earliestStart.AddHours(task.EstimatedHours);
-
-                // Adjust end date if there is a due date
-                if (task.DueDate.HasValue && endDate > task.DueDate.Value)
-                {
-                    endDate = task.DueDate.Value;
-                    earliestStart = endDate.AddHours(-task.EstimatedHours); // move start back to fit
-                }
-
-                schedule.Add(new ScheduledTaskDTO
-                {
-                    Title = title,
-                    StartDate = earliestStart,
-                    EndDate = endDate
-                });
-
-                taskEndDates[title] = endDate;
-            }
-
-            return new ScheduleResponseDTO { ScheduledTasks = schedule };
+            return order;
         }
     }
 }

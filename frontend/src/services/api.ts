@@ -25,8 +25,11 @@ export interface Project {
 export interface Task {
   id: string;
   title: string;
+  dueDate?: string; 
   isCompleted: boolean;
   projectId?: string;
+  estimatedHours?: number;
+  dependencies?: string[];
 }
 
 export interface AddTaskRequest {
@@ -42,13 +45,5 @@ API.interceptors.request.use((req) => {
   if (token) req.headers.Authorization = `Bearer ${token}`;
   return req;
 });
-
-export const generateSchedule = async (
-  projectId: string,
-  payload: ScheduleRequestDTO
-): Promise<ScheduleResponseDTO> => {
-  const { data } = await API.post(`/projects/${projectId}/schedule`, payload);
-  return data;
-};
 
 export default API;

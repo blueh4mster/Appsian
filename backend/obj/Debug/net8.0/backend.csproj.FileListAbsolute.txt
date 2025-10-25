@@ -160,9 +160,9 @@
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.backend.props
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/staticwebassets.pack.json
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/scopedcss/bundle/backend.styles.css
-/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.csproj.Up2Date
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.dll
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/refint/backend.dll
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.pdb
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.genruntimeconfig.cache
 /mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/ref/backend.dll
+/mnt/c/Users/PREETI/Documents/appsian/Appsian_2/backend/obj/Debug/net8.0/backend.csproj.CopyComplete

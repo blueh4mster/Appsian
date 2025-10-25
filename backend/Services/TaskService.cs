@@ -16,7 +16,7 @@ namespace Backend.Services
             _db = db;
         }
 
-        public TaskItem AddTask(Guid userId, Guid projectId, string title, DateTime? dueDate)
+        public TaskItem AddTask(Guid userId, Guid projectId, string title, DateTime? dueDate, int estimatedHours, List<string> dependencies)
         {
             var project = _db.Projects.FirstOrDefault(p => p.Id == projectId && p.UserId == userId);
             if (project == null) throw new Exception("Project not found");
@@ -27,7 +27,9 @@ namespace Backend.Services
                 ProjectId = projectId,
                 Title = title,
                 DueDate = dueDate,
-                IsCompleted = false
+                IsCompleted = false,
+                EstimatedHours = estimatedHours, 
+                Dependencies = dependencies
             };
 
             _db.Tasks.Add(task);

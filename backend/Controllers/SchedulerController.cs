@@ -5,24 +5,27 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("api/v1/projects/{projectId}/schedule")]
-    public class ScheduleController : ControllerBase
+    [Route("api/projects/{projectId}/schedule")]
+    public class SchedulerController : ControllerBase
     {
-        private readonly ISchedulerService _schedulerService;
+        private readonly SchedulerService _schedulerService;
 
-        public ScheduleController(ISchedulerService schedulerService)
+        public SchedulerController(SchedulerService schedulerService)
         {
             _schedulerService = schedulerService;
         }
 
         [HttpPost]
-        public IActionResult GenerateSchedule([FromBody] ScheduleRequestDTO request)
+        public IActionResult GenerateSchedule(Guid projectId, [FromBody] List<TaskDTO> tasks)
         {
             try
             {
-                // Use today's date as project start for simplicity
-                var result = _schedulerService.GenerateOptimalSchedule(request.Tasks, DateTime.Now);
-                return Ok(result);
+                var result = _schedulerService.GenerateSchedule(tasks);
+                return Ok(new
+                {
+                    recommendedOrder = result,
+                    message = "Schedule generated successfully"
+                });
             }
             catch (Exception ex)
             {

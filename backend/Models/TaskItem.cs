@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
 {
@@ -16,5 +17,18 @@ namespace Backend.Models
 
         public Guid ProjectId { get; set; }
         public Project Project { get; set; }
+
+        public int EstimatedHours { get; set; } = 0;
+
+        public string? DependenciesJson { get; set; }
+
+        [NotMapped]
+        public List<string> Dependencies
+        {
+            get => string.IsNullOrEmpty(DependenciesJson)
+                ? new List<string>()
+                : System.Text.Json.JsonSerializer.Deserialize<List<string>>(DependenciesJson);
+            set => DependenciesJson = System.Text.Json.JsonSerializer.Serialize(value);
+        }
     }
 }

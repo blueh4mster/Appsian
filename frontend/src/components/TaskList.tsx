@@ -28,12 +28,15 @@ export default function TaskList({ projectId }: TaskListProps) {
     // Automatically calculate schedule whenever tasks change
     async function generateSchedule() {
       if (tasks.length === 0) return;
-      const payload = { tasks: tasks.map(t => ({
+      const payload: Task[] = tasks.map(t => ({
+        id:t.id,
         title: t.title,
         estimatedHours: t.estimatedHours || 1,
         dueDate: t.dueDate,
-        dependencies: t.dependencies || []
-      }))};
+        dependencies: t.dependencies || [],
+        isCompleted: t.isCompleted || false,
+        projectId:projectId
+      }));
       const res = await API.post(`/projects/${projectId}/schedule`, payload);
       setSchedule(res.data.recommendedOrder);
     }
@@ -60,6 +63,7 @@ export default function TaskList({ projectId }: TaskListProps) {
   };
 
   return (
+    <>
     <div className="mt-3">
       <AddTaskForm projectId={projectId} onTaskAdded={fetchTasks} />
       {tasks.map((task) => (
@@ -77,5 +81,14 @@ export default function TaskList({ projectId }: TaskListProps) {
         </div>
       ))}
     </div>
+    <div className="p-4 bg-pink-50 rounded-lg">
+  <h2 className="text-lg font-bold text-pink-600 mb-2">Recommended Task Order</h2>
+  <ol className="list-decimal list-inside space-y-1">
+    {schedule.map((taskTitle, i) => (
+      <li key={i} className="text-pink-700">{taskTitle}</li>
+    ))}
+  </ol>
+</div>
+    </>
   );
 }
