@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API, {type Project } from "../services/api";
 import TaskList from "./TaskList";
+import SchedulerUI from "./SchedulerUI";
 export default function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [newTitle, setNewTitle] = useState("");
@@ -53,6 +54,7 @@ export default function ProjectList() {
           Add Project
         </button>
       </div>
+      <div>
       {projects.map((project) => (
         <div key={project.id} className="card mb-3 shadow-sm" style={{ backgroundColor: "#fff0f6" }}>
           <div className="card-body">
@@ -63,7 +65,11 @@ export default function ProjectList() {
             <TaskList projectId={project.id} />
           </div>
         </div>
-      ))}
+      ))}</div>
+      <div>
+        <SchedulerUI/>
+      </div>
+
     </div>
   );
 }

@@ -2,6 +2,9 @@ import { useState } from "react";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import ProjectList from "./components/ProjectList";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [showRegister, setShowRegister] = useState(false);

@@ -8,7 +8,7 @@ interface TaskListProps {
 
 export default function TaskList({ projectId }: TaskListProps) {
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [schedule, setSchedule] = useState<string[]>([]);
+    const [schedule, setSchedule] = useState<Task[]>([]);
 
   const fetchTasks = async () => {
     try {
@@ -65,8 +65,16 @@ export default function TaskList({ projectId }: TaskListProps) {
   return (
     <>
     <div className="mt-3">
-      <AddTaskForm projectId={projectId} onTaskAdded={fetchTasks} />
-      {tasks.map((task) => (
+    <div
+    style={{
+      display: "flex",
+      justifyContent: "flex-end",
+      marginBottom: "15px",
+    }}
+  >
+      <AddTaskForm projectId={projectId} onTaskAdded={fetchTasks} existingTasks={tasks}/></div>
+      <div>
+      {schedule.map((task) => (
         <div key={task.id} className="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style={{ backgroundColor: "#ffe6f0" }}>
           <div>
             <span className={`badge me-2 ${task.isCompleted ? "bg-success" : "bg-warning"}`} style={{ backgroundColor: task.isCompleted ? "#ff4d6d" : "#ffb3c6", color: "#fff" }}>
@@ -80,15 +88,8 @@ export default function TaskList({ projectId }: TaskListProps) {
           </div>
         </div>
       ))}
+      </div>
     </div>
-    <div className="p-4 bg-pink-50 rounded-lg">
-  <h2 className="text-lg font-bold text-pink-600 mb-2">Recommended Task Order</h2>
-  <ol className="list-decimal list-inside space-y-1">
-    {schedule.map((taskTitle, i) => (
-      <li key={i} className="text-pink-700">{taskTitle}</li>
-    ))}
-  </ol>
-</div>
     </>
   );
 }

@@ -5,7 +5,7 @@ namespace Backend.Services
 {
     public class SchedulerService
     {
-        public List<string> GenerateSchedule(List<TaskDTO> tasks)
+        public List<TaskDTO> GenerateSchedule(List<TaskDTO> tasks)
         {
             // Build adjacency list (dependency graph)
             var graph = new Dictionary<string, List<string>>();
@@ -44,16 +44,16 @@ namespace Backend.Services
                         .OrderBy(title => tasks.First(t => t.Title == title).DueDate ?? DateTime.MaxValue)
             );
 
-            var order = new List<string>();
+            var orderedTasks = new List<TaskDTO>();
 
-            while (queue.Count > 0)
-            {
-                var current = queue.Dequeue();
-                order.Add(current);
+            while (queue.Count > 0) {
+                var currentTitle = queue.Dequeue();
+                var currentTask = tasks.First(t => t.Title == currentTitle);
+                orderedTasks.Add(currentTask);
 
-                if (!graph.ContainsKey(current)) continue;
+                if (!graph.ContainsKey(currentTitle)) continue;
 
-                foreach (var neighbor in graph[current])
+                foreach (var neighbor in graph[currentTitle])
                 {
                     indegree[neighbor]--;
                     if (indegree[neighbor] == 0)
@@ -61,10 +61,10 @@ namespace Backend.Services
                 }
             }
 
-            if (order.Count != tasks.Count)
+            if (orderedTasks.Count != tasks.Count)
                 throw new Exception("Cycle detected or invalid dependencies.");
 
-            return order;
+            return orderedTasks;
         }
     }
 }
