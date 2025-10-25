@@ -1,6 +1,4 @@
-import axios, { type AxiosResponse } from "axios";
-import { type ScheduleRequestDTO, type ScheduleResponseDTO } from "../types";
-
+import axios from "axios";
 // Response types
 export interface LoginResponse {
   token: string;
