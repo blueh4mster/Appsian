@@ -37,7 +37,7 @@ export interface AddTaskRequest {
 }
 
 const API = axios.create({
-  baseURL: "http://localhost:5001/api",
+  baseURL: "https://appsian-2.onrender.com/api",
 });
 
 API.interceptors.request.use((req) => {
