@@ -55,6 +55,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<YourDbContext>();
+    db.Database.Migrate();
+}
+
 var app = builder.Build();
 
 app.UseAuthentication();
