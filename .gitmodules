@@ -1,0 +1,6 @@
+[submodule "appsian-q1-repo"]
+	path = appsian-q1-repo
+	url = git@github.com:blueh4mster/Appsian-1.git
+[submodule "appsian-q2-repo"]
+	path = appsian-q2-repo
+	url = git@github.com:blueh4mster/Appsian-2.git
