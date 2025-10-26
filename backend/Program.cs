@@ -61,14 +61,12 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Apply migrations **after app is built**
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-// Middleware order
 app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();

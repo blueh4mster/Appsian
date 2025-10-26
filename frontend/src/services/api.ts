@@ -1,5 +1,5 @@
 import axios from "axios";
-// Response types
+
 export interface LoginResponse {
   token: string;
 }

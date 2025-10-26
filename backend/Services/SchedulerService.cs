@@ -7,7 +7,6 @@ namespace Backend.Services
     {
         public List<TaskDTO> GenerateSchedule(List<TaskDTO> tasks)
         {
-            // Build adjacency list (dependency graph)
             var graph = new Dictionary<string, List<string>>();
             var indegree = new Dictionary<string, int>();
 
@@ -20,7 +19,6 @@ namespace Backend.Services
                     indegree[task.Title] = 0;
             }
 
-            // Add edges
             foreach (var task in tasks)
             {
                 foreach (var dep in task.Dependencies)
@@ -37,7 +35,6 @@ namespace Backend.Services
                 }
             }
 
-            // Kahn’s algorithm (BFS-based topological sort)
             var queue = new Queue<string>(
                 indegree.Where(kv => kv.Value == 0)
                         .Select(kv => kv.Key)
