@@ -10,35 +10,38 @@ var builder = WebApplication.CreateBuilder(args);
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.AllowAnyOrigin() // frontend URL
+                          policy.AllowAnyOrigin() // Or specify frontend URL
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
 });
 
+// Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=app.db"));
 
+// Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<SchedulerService>();
 
+// Controllers
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-        options.JsonSerializerOptions.WriteIndented = true; // optional
+        options.JsonSerializerOptions.WriteIndented = true;
     });
 
-builder.Services.AddControllers();
-
+// Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -56,17 +59,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+var app = builder.Build();
+
+// Apply migrations **after app is built**
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<YourDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-var app = builder.Build();
-
+// Middleware order
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
 
